@@ -1,5 +1,4 @@
 const std = @import("std");
-const print = std.debug.print;
 
 pub const Args = struct {
     const Self = @This();
