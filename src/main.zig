@@ -7,6 +7,7 @@ const Args = @import("./args.zig").Args;
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 var cells = std.AutoHashMap(i64, i64).init(&gpa.allocator);
 var index: i64 = 0;
+const debug = false;
 
 const Instruction = union(enum) {
     Back,
@@ -38,12 +39,13 @@ pub fn main() !void {
                 '.' => if (loop_on) try loop_instructions.append(.Out) else try instructions.append(.Out),
                 '[' => loop_on = true,
                 ']' => blk: {
-                    try instructions.append(Instruction{.Loop = loop_instructions}); 
+                    if (debug) print("{}", .{loop_instructions});
+                    try instructions.append(Instruction{ .Loop = loop_instructions }); 
                     loop_instructions.shrinkAndFree(0);
                     loop_on = false;
                     break :blk {};
                 },
-                else => if (loop_on) try loop_instructions.append(.Other) else try instructions.append(.Other),
+                else => {},
             }
             // print("{c}\n", .{text});
         }
