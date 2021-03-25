@@ -22,7 +22,9 @@ pub const Args = struct {
 
           files.append(contents) catch @panic("Could not append to arraylist");
 
-            // defer allocator.free(contents);
+          // This prematurely frees contents when it is owned by ArrayList
+          // contents should be freed when the struct is deinited          
+          // defer allocator.free(contents);
         }
 
         return Args {
