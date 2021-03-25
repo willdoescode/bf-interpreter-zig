@@ -34,9 +34,8 @@ pub const Args = struct {
 
     pub fn next(self: *Self) ?[]const u8 {
       if (self.index < self.files.items.len) {
-        const res = self.files.items[self.index];
-        self.index += 1;
-        return res;
+        defer self.index += 1; 
+        return self.files.items[self.index];
       } 
       return null;
     }
