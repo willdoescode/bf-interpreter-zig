@@ -14,7 +14,7 @@ pub const Args = struct {
     allocator: *std.mem.Allocator,
     index: usize = 0,
 
-    pub fn init(args: *std.process.ArgIterator, allocator: *std.mem.Allocator) Args {
+    pub fn init(args: *std.process.ArgIterator, allocator: *std.mem.Allocator) Self {
         std.debug.assert(args.skip());
 
         var files = std.ArrayList([]u8).init(allocator);
@@ -36,7 +36,7 @@ pub const Args = struct {
           // defer allocator.free(contents);
         }
 
-        return Args {
+        return Self {
             .files = files,
             .allocator = allocator,
         };
