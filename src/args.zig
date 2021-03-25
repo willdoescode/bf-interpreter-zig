@@ -36,9 +36,8 @@ pub const Args = struct {
         const res = self.files.items[self.index];
         self.index += 1;
         return res;
-      } else {
-        return null;
-      }
+      } 
+      return null;
     }
 
     pub fn deinit(self: *Self) void {
