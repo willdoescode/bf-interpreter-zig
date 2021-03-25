@@ -1,10 +1,9 @@
 const std = @import("std");
-const print = std.debug.print;
 
 const BYTE_READ_LIMIT: usize = 10000;
 
 fn fileError(comptime msg: []const u8, args: anytype) noreturn {
-  print(msg, args);
+  std.debug.print(msg, args);
   std.process.exit(1);
 } 
 
@@ -21,12 +20,12 @@ pub const Args = struct {
 
         while (args.nextPosix()) |arg| {
           const file = std.fs.cwd().openFile(arg, .{ .read = true })
-            catch fileError("Could not open file: {s}", .{arg});
+            catch fileError("Could not open file: {s}\n", .{arg});
 
-          file.seekTo(0) catch fileError("Could not seek position 0 in {s}", .{file});
+          file.seekTo(0) catch fileError("Could not seek position 0 in {s}\n", .{file});
 
           const contents = file.readToEndAlloc(allocator, BYTE_READ_LIMIT)
-           catch fileError("Could not read file: {s}", .{file});
+           catch fileError("Could not read file: {s}\n", .{file});
 
           files.append(contents) catch unreachable;
 
