@@ -1,4 +1,12 @@
 const std = @import("std");
+const print = std.debug.print;
+
+const BYTE_READ_LIMIT: usize = 10000;
+
+fn fileError(comptime msg: []const u8, args: anytype) noreturn {
+  print(msg, args);
+  std.process.exit(1);
+} 
 
 pub const Args = struct {
     const Self = @This();
@@ -13,13 +21,14 @@ pub const Args = struct {
 
         while (args.nextPosix()) |arg| {
           const file = std.fs.cwd().openFile(arg, .{ .read = true })
-                catch @panic("Could not open file");
+            catch fileError("Could not open file: {s}", .{arg});
 
-          file.seekTo(0) catch |_| @panic("Could not seek position 0 in file");
+          file.seekTo(0) catch fileError("Could not seek position 0 in {s}", .{file});
 
-          const contents = file.readToEndAlloc(allocator, 10000) catch |_| @panic("Could not read file");
+          const contents = file.readToEndAlloc(allocator, BYTE_READ_LIMIT)
+           catch fileError("Could not read file: {s}", .{file});
 
-          files.append(contents) catch @panic("Could not append to arraylist");
+          files.append(contents) catch unreachable;
 
           // This prematurely frees contents when it is owned by ArrayList
           // contents should be freed when the struct is deinited          
@@ -41,9 +50,8 @@ pub const Args = struct {
     }
 
     pub fn deinit(self: *Self) void {
-      for (self.files.items) |item| {
-        self.allocator.free(item);
-      }
+      for (self.files.items) |item| self.allocator.free(item);
+
       self.files.deinit();
     }
 };
