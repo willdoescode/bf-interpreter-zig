@@ -9,6 +9,7 @@ fn fileError(comptime msg: []const u8, args: anytype) noreturn {
 
 pub const Args = struct {
     const Self = @This();
+
     files: std.ArrayList([]u8),
     allocator: *std.mem.Allocator,
     index: usize = 0,
@@ -22,10 +23,11 @@ pub const Args = struct {
           const file = std.fs.cwd().openFile(arg, .{ .read = true })
             catch fileError("Could not open file: {s}\n", .{arg});
 
-          file.seekTo(0) catch fileError("Could not seek position 0 in {s}\n", .{file});
+          file.seekTo(0)
+            catch fileError("Could not seek position 0 in {s}\n", .{file});
 
           const contents = file.readToEndAlloc(allocator, BYTE_READ_LIMIT)
-           catch fileError("Could not read file: {s}\n", .{file});
+            catch fileError("Could not read file: {s}\n", .{file});
 
           files.append(contents) catch unreachable;
 
