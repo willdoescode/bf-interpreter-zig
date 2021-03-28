@@ -1,6 +1,7 @@
 const std = @import("std");
 const env = std.process.args;
 const print = std.debug.print;
+const stdin_reader = std.io.getStdIn().reader();
 
 const Args = @import("./args.zig").Args;
 
@@ -11,7 +12,7 @@ const BUFSIZE = 65535;
 var buf: [BUFSIZE]u8 = undefined;
 var ptr: usize = 0;
 
-fn interpretContents(contents: []const u8) void {
+fn interpretContents(contents: []const u8) !void {
     var s = gpa.allocator.dupe(u8, contents) catch unreachable;
     defer gpa.allocator.free(s);
 
@@ -54,6 +55,7 @@ fn interpretContents(contents: []const u8) void {
                 }
                 i -= 1;
             },
+            ',' => buf[ptr] = try stdin_reader.readByte(),
             else => {},
         }
     }
@@ -74,7 +76,7 @@ pub fn main() !void {
     var args = Args.init(&env(), BYTE_READ_LIMIT, &gpa.allocator);
     defer args.deinit();
 
-    while (args.next()) |content| interpretContents(content);
+    while (args.next()) |content| try interpretContents(content);
 }
 
 
