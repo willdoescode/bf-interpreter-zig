@@ -7,7 +7,6 @@ const Args = @import("./args.zig").Args;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 
-const BYTE_READ_LIMIT: usize = 100000;
 const BUFSIZE = 65535;
 var buf: [BUFSIZE]u8 = undefined;
 var ptr: usize = 0;
@@ -60,7 +59,7 @@ fn interpretContents(s: []const u8) !void {
 pub fn main() !void {
     defer std.debug.assert(!gpa.deinit());
 
-    var args = Args.init(&env(), BYTE_READ_LIMIT, &gpa.allocator);
+    var args = Args.init(&env(), 100_000, &gpa.allocator);
     defer args.deinit();
 
     while (args.next()) |content| try interpretContents(content);
