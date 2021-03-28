@@ -1,7 +1,5 @@
 const std = @import("std");
 
-const BYTE_READ_LIMIT: usize = 10000;
-
 fn fileError(comptime msg: []const u8, args: anytype) noreturn {
   std.debug.print(msg, args);
   std.process.exit(1);
@@ -14,7 +12,11 @@ pub const Args = struct {
     allocator: *std.mem.Allocator,
     index: usize = 0,
 
-    pub fn init(args: *std.process.ArgIterator, allocator: *std.mem.Allocator) Self {
+    pub fn init(
+        args: *std.process.ArgIterator,
+        byte_read_limit: usize,
+        allocator: *std.mem.Allocator
+      ) Self {
         std.debug.assert(args.skip());
 
         var files = std.ArrayList([]u8).init(allocator);
@@ -26,7 +28,7 @@ pub const Args = struct {
           file.seekTo(0)
             catch fileError("Could not seek position 0 in {s}\n", .{file});
 
-          const contents = file.readToEndAlloc(allocator, BYTE_READ_LIMIT)
+          const contents = file.readToEndAlloc(allocator, byte_read_limit)
             catch fileError("Could not read file: {s}\n", .{file});
 
           files.append(contents) catch unreachable;
