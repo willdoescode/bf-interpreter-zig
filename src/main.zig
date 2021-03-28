@@ -8,12 +8,15 @@ var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 
 const BYTE_READ_LIMIT: usize = 100000;
 const BUFSIZE = 65535;
-var buf: [BUFSIZE]u8 = [_]u8{0} ** BUFSIZE;
+var buf: [BUFSIZE]u8 = undefined;
 var ptr: usize = 0;
 
 fn interpretContents(contents: []const u8) void {
     var s = gpa.allocator.dupe(u8, contents) catch unreachable;
     defer gpa.allocator.free(s);
+
+    buf = [_]u8{0} ** BUFSIZE;
+    ptr = 0;
 
     var i: usize = 0;
     var right = s.len;
