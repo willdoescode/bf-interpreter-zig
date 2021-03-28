@@ -1,5 +1,7 @@
 # bf-interpreter-zig
 
+![example](example.png)
+
 ## Rules
 - \> move cell pointer forward
 - < move cell pointer backward
