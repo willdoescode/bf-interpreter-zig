@@ -1,6 +1,6 @@
 const std = @import("std");
 const env = std.process.args;
-const print = std.debug.print;
+const print = std.io.getStdOut().writer().print;
 const stdin_reader = std.io.getStdIn().reader();
 
 const Args = @import("./args.zig").Args;
@@ -31,7 +31,7 @@ fn interpretContents(contents: []const u8) !void {
                 ptr -= 1;
                 if (ptr < 0) ptr = BUFSIZE - 1;
             },
-            '.' => print("{c}", .{buf[ptr]}),
+            '.' => try print("{c}", .{buf[ptr]}),
             '+' => buf[ptr] +%= 1,
             '-' => buf[ptr] -%= 1,
             '[' => {
@@ -61,25 +61,11 @@ fn interpretContents(contents: []const u8) !void {
     }
 }
 
-// > move cell pointer forward
-// < move cell pointer backward
-// + increment current cell
-// - decrement current cell
-// , take a character as input and assign to current cell
-// . output character value of current cell
-// [ start loop
-// ] end loop if current cell is zero
-
 pub fn main() !void {
-    defer deinit();
+    defer std.debug.assert(!gpa.deinit());
 
     var args = Args.init(&env(), BYTE_READ_LIMIT, &gpa.allocator);
     defer args.deinit();
 
     while (args.next()) |content| try interpretContents(content);
-}
-
-
-fn deinit() void {
-    defer std.debug.assert(!gpa.deinit());
 }
