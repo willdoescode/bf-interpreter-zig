@@ -12,10 +12,7 @@ const BUFSIZE = 65535;
 var buf: [BUFSIZE]u8 = undefined;
 var ptr: usize = 0;
 
-fn interpretContents(contents: []const u8) !void {
-    var s = gpa.allocator.dupe(u8, contents) catch unreachable;
-    defer gpa.allocator.free(s);
-
+fn interpretContents(s: []const u8) !void {
     buf = [_]u8{0} ** BUFSIZE;
     ptr = 0;
 
