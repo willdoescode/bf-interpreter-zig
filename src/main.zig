@@ -17,8 +17,7 @@ fn interpretContents(s: []const u8) !void {
     ptr = 0;
 
     var i: usize = 0;
-    var right = s.len;
-    while (i < right) : (i += 1) {
+    while (i < s.len) : (i += 1) {
         switch (s[i]) {
             '>' => {
                 ptr += 1;
