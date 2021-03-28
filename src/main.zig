@@ -3,7 +3,7 @@ const env = std.process.args;
 const print = std.io.getStdOut().writer().print;
 const stdin_reader = std.io.getStdIn().reader();
 
-const Args = @import("./args.zig").Args;
+const Args = @import("args").Args;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 

@@ -1,0 +1,3 @@
+[submodule "quick-file-arg-iterator"]
+	path = quick-file-arg-iterator
+	url = https://github.com/willdoescode/quick-file-arg-iterator

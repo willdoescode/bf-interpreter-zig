@@ -6,6 +6,10 @@ pub fn build(b: *std.build.Builder) void {
     const mode = b.standardReleaseOptions();
 
     const exe = b.addExecutable("bf-interpreter-zig", "src/main.zig");
+    exe.addPackage(.{
+        .name = "args",
+        .path = "./quick-file-arg-iterator/src/main.zig"
+    });
     exe.setTarget(target);
     exe.setBuildMode(mode);
     exe.install();
