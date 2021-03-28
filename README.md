@@ -11,3 +11,27 @@
 - . output character value of current cell
 - [ start loop
 - ] end loop if current cell is zero
+
+## Building
+
+#### For fastest build
+
+```shell
+zig build -Drelease-small
+```
+
+#### For debug build
+
+```shell
+zig build
+```
+
+## Using
+
+First build with the steps above
+
+Then move the executable build from zig-cache/bin/ to your path
+
+```
+<execname> examples/mandel.bf
+```
