@@ -1,4 +1,4 @@
-# bf-interpreter-zig
+# BF zig interpreter
 
 ![example](example.png)
 
