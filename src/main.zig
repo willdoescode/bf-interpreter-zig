@@ -35,8 +35,7 @@ fn interpretContents(s: []const u8) !void {
                     while (loop > 0) {
                         i += 1;
                         const c = s[i];
-                        if (c == '[') loop += 1
-                        else if (c == ']') loop -= 1;
+                        if (c == '[') loop += 1 else if (c == ']') loop -= 1;
                     }
                 }
             },
@@ -45,8 +44,7 @@ fn interpretContents(s: []const u8) !void {
                 while (loop > 0) {
                     i -= 1;
                     const c = s[i];
-                    if (c == '[') loop -= 1
-                    else if (c == ']') loop += 1;
+                    if (c == '[') loop -= 1 else if (c == ']') loop += 1;
                 }
                 i -= 1;
             },
