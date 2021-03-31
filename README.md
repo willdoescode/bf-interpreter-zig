@@ -12,6 +12,16 @@
 - [ start loop
 - ] end loop if current cell is zero
 
+## Using
+
+#### First build with the steps above
+
+#### Then move the executable build from zig-cache/bin/ to your path
+
+```
+<execname> examples/mandel.bf
+```
+
 ## Building
 
 #### For fastest build
@@ -26,12 +36,3 @@ zig build -Drelease-small
 zig build
 ```
 
-## Using
-
-First build with the steps above
-
-Then move the executable build from zig-cache/bin/ to your path
-
-```
-<execname> examples/mandel.bf
-```
